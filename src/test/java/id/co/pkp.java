@@ -71,9 +71,9 @@ public class pkp {
     }
 
     @Test
-    @DisplayName("Verify Tooltip");
+    @DisplayName("Tooltip Check Test")
 
-    public void verifytooltip() {
+    public void tooltipCheckTest() {
         Playwright playwright = Playwright.create();
         BrowserContext browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)).newContext();
         Page page = browser.newPage();
@@ -85,5 +85,38 @@ public class pkp {
         String textContent = toolTipText.textContent();
         System.out.println(textContent);
     }
+
+    @Test
+    @DisplayName("Assert Title Test")
+    public void assertTitleTest() {
+        Playwright playwright = Playwright.create();
+        BrowserContext browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)).newContext();
+        Page page = browser.newPage();
+        page.navigate("http://www.programsbuzz.com");
+        String title = page.title();
+        String expectedTitle = "ProgramsBuzz - Online Technical Courses";
+        if (title.equalsIgnoreCase(expectedTitle)) {
+            System.out.println("Title Match Verfied");
+        } else {
+            System.out.println("Not a match!!");
+        }
+    }
+
+    @Test
+    @DisplayName("Get Current URL Java")
+    public void getCurrentUrl() {
+        Playwright playwright = Playwright.create();
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        Page page = browser.newPage();
+        page.navigate("http://www.programsbuzz.com/user/login");
+        page.locator("#edit-name").type("Naruto");
+        page.locator("#edit-pass").type("uzumaki");
+        String currentUrl = page.url();
+        System.out.println(currentUrl);
+        browser.close();
+        playwright.close();
+    }
 }
+
+
 
