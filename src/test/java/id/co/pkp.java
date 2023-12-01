@@ -4,6 +4,8 @@ import com.microsoft.playwright.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 public class pkp {
     @Test
     @DisplayName("Test")
@@ -116,6 +118,42 @@ public class pkp {
         browser.close();
         playwright.close();
     }
+
+    @Test
+    @DisplayName("Maximize Browser")
+    public void maximizeBrowserTest() {
+        Playwright playwright = Playwright.create();
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+
+        browser.newContext(new Browser.NewContextOptions().setViewportSize(1800, 880));
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+
+        int width2 = (int) screenSize.getWidth();
+        int height2 = (int) screenSize.getHeight();
+        BrowserContext newContext = browser.newContext(new Browser.NewContextOptions().setViewportSize(width2, height2));
+        browser.close();
+        playwright.close();
+    }
+
+    @Test
+    @DisplayName("How to Refresh Page")
+    public void howtoRefreshPageTest() {
+        Playwright playwright = Playwright.create();
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        Page page = browser.newPage();
+        page.navigate("http://autopract.com/selenium/popup/");
+        page.reload();
+        page.locator("//a[normalize-space()='JQuery Popup Model']").click();
+        String textContent = page.locator("//p[normalize-space()='This is Sample Popup.']").textContent();
+        System.out.println(textContent);
+        page.close();
+        browser.close();
+        playwright.close();
+    }
+
 }
 
 
