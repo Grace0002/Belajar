@@ -185,6 +185,27 @@ public class pkp {
         browser.close();
         playwright.close();
     }
+
+    @Test
+    @DisplayName("Using XPath")
+    public void usingPathTest() {
+        Playwright playwright = Playwright.create();
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        Page page = browser.newPage();
+        page.navigate("https://www.programsbuzz.com/user/login");
+        page.locator("//input[@id= 'edit-name']").type("Naruto");
+//        page.locator("xpath=//input[@id= 'edit-name']").type("Naruto");
+        page.locator("//input[@id= 'edit-pass']").type("Sasuke");
+        page.locator("//input[@id= 'edit-submit']").click();
+
+        page.navigate("https://programsbuzz.com");
+        String textContent = page.locator("div.container-fluid ul li >> nth=6").textContent();
+        System.out.println(textContent);
+
+        page.close();
+        browser.close();
+        playwright.close();
+    }
 }
 
 
