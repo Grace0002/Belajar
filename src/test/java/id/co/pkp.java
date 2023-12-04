@@ -8,15 +8,15 @@ import java.awt.*;
 
 public class pkp {
     @Test
-    @DisplayName("Test")
+    @DisplayName("Test Web PKP")
     public void test1() {
         Playwright playwright = Playwright.create();
         Browser browser = playwright.chromium().launch();
         Page page = browser.newPage();
-        page.navigate("http://www.programsbuzz.com/user/login");
-        System.out.println(page.title());
+//        page.navigate("https://pkp.co.id");
+        page.navigate("https://www.google.co.id/");
+        System.out.println("Page Title nya adalah: " + page.title());
     }
-
     @Test
     @DisplayName("Check URL or Check HTTPS")
     public void teshttps() {
@@ -38,13 +38,14 @@ public class pkp {
 
     @Test
     @DisplayName("Check Place Holder")
-    public void checkPlaceholder() {
+    public void checkPlaceHolder() {
         Playwright playwright = Playwright.create();
         Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
         Page page = browser.newPage();
         page.navigate("https://www.programsbuzz.com/user/login");
-        Locator searchBar = page.locator("#edit-keys");
-        String placeText = searchBar.getAttribute("placeholder");
+
+        Locator searchBar = page.locator("#edit-keys--2");
+        String placeText = searchBar.getAttribute("search");
 
         if (placeText.contains("Enter the terms you wish to search for")) {
 
@@ -154,6 +155,80 @@ public class pkp {
         playwright.close();
     }
 
+    @Test
+    @DisplayName("Get First and Last Element")
+    public void getFirstandLastElement() {
+        Playwright playwright = Playwright.create();
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        Page page = browser.newPage();
+        page.navigate("https://www.programsbuzz.com/search/node?keys=playwright+java");
+
+        Locator listEle = page.locator("//h3[@class='search-result__title']");
+        //Find the First Element using the first method
+        listEle.first().click();
+
+        //Find the First Element using Nth Method
+        page.navigate("https://www.programsbuzz.com/search/node?keys=playwright+java");
+        Locator listEle2 = page.locator("//h3[@class='search-result__title']");
+        listEle2.nth(0).click();
+
+        //Find the Last Element using the last method
+        page.navigate("https://www.programsbuzz.com/search/node?keys=playwright+java");
+        Locator listEle3 = page.locator("//h3[@class='search-result__title']");
+        listEle3.last().click();
+
+        //Find the Last Element using Nth Method
+        page.navigate("https://www.programsbuzz.com/search/node?keys=playwright+java");
+        Locator listEle4 = page.locator("//h3[@class='search-result__title']");
+        listEle4.last().click();
+    }
+
+    @Test
+    @DisplayName("Get List of Elements")
+    public void getListofElements() {
+        Playwright playwright = Playwright.create();
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        Page page = browser.newPage();
+        page.navigate("https://www.programsbuzz.com/search/node?keys=playwright+java");
+
+        Locator listEle = page.locator("//h3[@class='search-result__title']");
+
+        int count = listEle.count();
+
+        Assert.assertEquals(count, 10);
+
+        //NTH Content Filter
+        page.navigate("https://www.programsbuzz.com/search/node?keys=playwright+java");
+        String textContent = listEle.nth(1).textContent();
+        System.out.println(textContent);
+
+        //Display a list of texts
+        page.navigate("https://www.programsbuzz.com/search/node?keys=playwright+java");
+        List<String> allTextContents = listEle.allTextContents();
+        System.out.println(allTextContents);
+    }
+
+    @Test
+    @DisplayName("Using XPATH")
+    public void usingXPATH() {
+        Playwright playwright = Playwright.create();
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        Page page = browser.newPage();
+        page.navigate("https://www.programsbuzz.com/user/login");
+        page.locator("xpath=//input[@id= 'edit-name']").type("Naruto");
+        //Without XPATH
+        page.locator("//input[@id= 'edit-name']").type("Naruto");
+    }
+
+    @Test
+    @DisplayName("Handle Dropdown")
+    public void handleDropdown() {
+        Playwright playwright = Playwright.create();
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        Page page = browser.newPage();
+        page.navigate("http://autopract.com/selenium/dropdown1/");
+        page.selectOption(".custom-select", "item");
+    }
 }
 
 
